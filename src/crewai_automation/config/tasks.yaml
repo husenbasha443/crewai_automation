@@ -1,17 +1,45 @@
-research_task:
+code_ingestion_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Analyze the given codebase related to the topic "{topic}" in depth.
+    Scan the repository structure to identify the primary programming language,
+    frameworks, entry points, configuration files, and recent code changes.
+    Focus on extracting only relevant source files and diffs that are critical
+    for review, while ignoring non-essential assets such as documentation,
+    binaries, or generated files. Ensure the extracted code context is complete,
+    accurate, and suitable for further automated analysis.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    A structured summary of the codebase for the topic "{topic}",
+    including project structure, key files, identified entry points,
+    and a curated set of source files prepared for issue detection.
+  agent: code_ingestion_agent
 
-reporting_task:
+
+bug_detection_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Using the extracted code context for the topic "{topic}",
+    perform comprehensive static analysis to identify potential issues.
+    Detect bugs, logical errors, security vulnerabilities, performance
+    bottlenecks, and violations of best coding practices. The analysis
+    should remain strictly diagnostic and must not propose solutions
+    or code changes. Prioritize issues based on severity, impact,
+    and potential risk to system stability or security.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A detailed issue analysis report for the topic "{topic}",
+    listing identified bugs, vulnerabilities, and code quality concerns,
+    categorized by severity and impact.
+  agent: bug_detection_agent
+
+validation_task:
+  description: >
+    Validate the generated code fixes for the topic "{topic}"
+    by performing logical verification, simulated test scenarios,
+    and safety rule enforcement. Assess whether the changes introduce
+    regressions, break existing functionality, or violate security
+    and quality constraints. The validation process should act as
+    a strict quality gate, approving only fixes that meet all
+    reliability and safety requirements.
+  expected_output: >
+    A validation result for the topic "{topic}",
+    indicating approved fixes, rejected changes with reasons,
+    and overall quality assurance status.
+  agent: validation_agent
